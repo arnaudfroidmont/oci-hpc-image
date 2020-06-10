@@ -1,0 +1,40 @@
+---
+- block: 
+  - name: Install development tools
+    yum: 
+      state: latest
+      name:
+        - "@Development Tools" 
+
+  - name: Install packages required for Mellanox OFED installation
+    yum: 
+      state: latest
+      name: 
+          - numactl 
+          - numactl-devel 
+          - libxml2-devel
+          - byacc
+          - environment-modules
+          - python-devel
+          - python-setuptools
+          - gtk2
+          - atk
+          - cairo
+          - tcl
+          - tk
+          - m4
+          - texinfo
+          - glibc-devel
+          - glibc-static
+          - libudev-devel
+          - binutils
+          - binutils-devel
+          - selinux-policy-devel
+          - kernel-headers
+          - nfs-utils
+
+  - name: Install UEK kernel 
+    yum: 
+      state: latest
+      name: 
+        - "kernel-uek-devel-{{ ansible_kernel }}"
