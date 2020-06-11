@@ -39,13 +39,12 @@
       state: latest
       name: 
         - "kernel-uek-devel-{{ ansible_kernel }}"
-
-
 - block: 
 
 #
 # Mellanox did not release OL7.8 supported version. Need to download 7.7
 #
+
   - name: Check for mellanox OFED
     shell: ofed_info -n
     register: ofed_version
@@ -62,6 +61,7 @@
     unarchive: 
       src: /tmp/MLNX_OFED_LINUX-{{ mellanox_ofed_version }}-ol{{ os_version }}-x86_64.tgz
       dest: /tmp/
+      remote_src: yes
     when: ofed_version is failed or ofed_version.stdout != mellanox_ofed_version
 
   - name: Install OFED
@@ -75,6 +75,14 @@
 #
 # Copy the required fles
 #
+
+  - name: 
+    include_vars: vars/oraclelinux-7.yml 
+
+  - debug:
+      msg: "interface_name: {{ interface_name }}"
+
+
   - name: Copy /opt/oci-hpc/sbin
     copy: 
       src: files/sbin 
@@ -93,6 +101,14 @@
       owner: root
       directory_mode:
 
+  - name: /etc/logrotate.d/wpa_supplicant
+    copy: 
+      src: files/logrotate.d/wpa_supplicant
+      dest: /etc/logrotate.d/wpa_supplicant
+      mode: 0644
+      group: root
+      owner: root
+
   - name: Install WPA certs cron script
     cron: 
       name: "update wpa certs"
@@ -110,4 +126,19 @@
       state: link
       mode: '0755'
 
+  - name: Install limits.conf 
+    template: 
+      src: "templates/limits.j2" 
+      dest: "/etc/security/limits.d/50-hpc-limits.conf" 
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Install dat.conf
+    template: 
+      src: "templates/dat.j2" 
+      dest: "/etc/dat.conf" 
+      owner: root
+      group: root
+      mode: 0644
 

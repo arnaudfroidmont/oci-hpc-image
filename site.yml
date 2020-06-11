@@ -4,3 +4,6 @@
 
   roles: 
     - ofed
+    - hpcx
+    - gcc-9
+    - intel

@@ -1,0 +1,12 @@
+#
+# /etc/logrotate.d/wpa_supplicant
+#
+# add copytruncate option to rotation, as wpa_supplicant keeps its fd always open.
+#
+/var/log/wpa_supplicant.log {
+    missingok
+    copytruncate
+    notifempty
+    size 30k
+    create 0600 root root
+}

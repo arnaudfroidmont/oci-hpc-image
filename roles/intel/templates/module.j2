@@ -1,0 +1,27 @@
+#%Module 1.0
+#
+#  Intel MPI {{ item }}
+#
+
+{% set intel_mpi_release = item.split('.')[0] %}
+
+conflict        mpi
+module load /opt/intel/impi/{{ item }}/intel64/modulefiles/mpi
+setenv          MPI_BIN         /opt/intel/impi/{{ item }}/intel64/bin
+setenv          MPI_INCLUDE     /opt/intel/impi/{{ item }}/intel64/include
+setenv          MPI_LIB         /opt/intel/impi/{{ item }}/intel64/lib
+setenv          MPI_MAN         /opt/intel/impi/{{ item }}/man
+setenv          MPI_HOME        /opt/intel/impi/{{ item }}/intel64
+{% if ansible_os_family == 'RedHat' and ansible_distribution == 'OracleLinux' and ansible_distribution_major_version == '7' %}
+setenv          I_MPI_HYDRA_IFACE    enp94s0f0
+{% endif %}
+{% if intel_mpi_release == '2018' %} 
+setenv          I_MPI_FABRICS        shm:dapl
+setenv          DAT_OVERRIDE         /etc/dat.conf
+setenv          I_MPI_DAT_LIBRARY    /usr/lib64/libdat2.so
+setenv          I_MPI_DAPL_PROVIDER  ofa-v2-cma-roe-enp94s0f0
+setenv          I_MPI_FALLBACK       0
+{% elif intel_mpi_release == '2019' %}
+setenv          I_MPI_FABRICS        shm:ofi
+setenv          I_MPI_FALLBACK       0
+{% endif %}

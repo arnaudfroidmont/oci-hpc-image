@@ -1,0 +1,22 @@
+---
+- block: 
+  - name: Install GCC-9 SCL 
+    yum:
+      state: latest
+      name:
+          - scl-utils
+          - devtoolset-9
+
+  - name: Create MPI directory
+    file:
+      path: /usr/share/Modules/modulefiles/gcc/
+      state: directory
+
+  - name: Create gcc-9 modulefile
+    template: 
+      src: "templates/module.j2"
+      dest: "/usr/share/Modules/modulefiles/gcc/scl-9"
+      owner: root
+      group: root
+      mode: 0644
+

@@ -1,0 +1,27 @@
+#
+# DAT config file for Mellanox CX-5 hardware configured for RoCE V1/V2
+#
+#
+#
+# DAT v2.0
+#
+# Note: Both API and Provider versions are based on DAT specification, v2.0
+#  
+# Each entry should have the following fields:
+#
+# <ia_name> <api_version> <threadsafety> <default> <lib_path> \
+#           <provider_version> <ia_params> <platform_params>
+#
+# For uDAPL cma provder, <ia_params> is one of the following:
+#       network address, network hostname, or netdev name and 0 for port
+#
+# For uDAPL scm provider, <ia_params> is device name and port
+# For uDAPL ucm provider, <ia_params> is device name and port
+# For uDAPL iWARP provider, <ia_params> is netdev device name and 0 
+# For uDAPL iWARP provider, <ia_params> is netdev device name and 0 
+# For uDAPL RoCE provider, <ia_params> is device name and 0 
+# 
+ofa-v2-{{ interface_name }}0 u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "{{ interface_name}}0 1" ""
+ofa-v2-cma-roe-{{ interface_name }}0 u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "{{interface_name}}0 0" ""
+ofa-v2-{{ interface_name }}1 u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "{{ interface_name }}1 1" ""
+ofa-v2-cma-roe-{{ interface_name }}1 u2.0 nonthreadsafe default libdaplofa.so.2 dapl.2.0 "{{ interface_name}}1 0" ""

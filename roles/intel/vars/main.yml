@@ -1,0 +1,3 @@
+---
+install_prefix: "/opt"
+hpcx_version: "v2.6.0"

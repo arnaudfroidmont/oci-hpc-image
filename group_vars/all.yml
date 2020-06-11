@@ -1,3 +1,7 @@
 mellanox_ofed_version: 5.0-2.1.8.0
 mellanox_ofed_base_url: "http://content.mellanox.com/ofed"
 mellanox_ofed_package_name: "MLNX_OFED_LINUX"
+intel_mkl_version: "2019.5-075"
+intel_mpi_versions:
+  - "2018.4-057"
+  - "2019.7-102"
