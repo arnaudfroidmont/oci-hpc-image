@@ -84,11 +84,21 @@
       path: /usr/share/Modules/modulefiles/mpi/
       state: directory
 
+  - name: Find iMPI paths
+    find: 
+      paths: 
+        - /opt/intel/impi/
+      file_type: link
+    register: intel_impi
+
+  - debug: 
+      msg: "Found IMPI: {{ intel_impi.files }}" 
+
   - name: Generate Intel module file
     template: 
       src: "templates/module.j2" 
-      dest: "/usr/share/Modules/modulefiles/mpi/intel-{{ item }}"
+      dest: "/usr/share/Modules/modulefiles/mpi/intel-{{ item['path'].split('/')[4] }}"
       owner: root
       group: root
       mode: 0644
-    loop: "{{ intel_mpi_versions }}"
+    with_items: "{{ intel_impi.files }}"

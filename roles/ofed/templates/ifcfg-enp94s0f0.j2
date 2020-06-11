@@ -1,0 +1,21 @@
+# /etc/sysconfig/network-scripts/ifcfg-enp94s0f0
+#
+# only this interface is supported for RDMA network (port 1 -- first physical port)
+# 
+# initial defalt setup, with an unusable IP address and well known UUID.
+# it will be later overriden by the provisioning scripts.
+#
+TYPE="Ethernet"
+BOOTPROTO="none"
+IPADDR=
+NETMASK=
+DEFROUTE="no"
+PEERDNS="no"
+PEERROUTES="no"
+IPV4_FAILURE_FATAL="no"
+IPV6INIT="no"
+IPV6_FAILURE_FATAL="no"
+NAME="System enp94s0f0"
+UUID="6870f8d1-1bae-4a1e-86ad-b5f03067f03d"
+DEVICE="enp94s0f0"
+ONBOOT="yes"

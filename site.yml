@@ -3,6 +3,7 @@
   become: true
 
   roles: 
+    - legacy
     - ofed
     - hpcx
     - gcc-9

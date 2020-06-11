@@ -82,7 +82,6 @@
   - debug:
       msg: "interface_name: {{ interface_name }}"
 
-
   - name: Copy /opt/oci-hpc/sbin
     copy: 
       src: files/sbin 
@@ -130,6 +129,14 @@
     template: 
       src: "templates/limits.j2" 
       dest: "/etc/security/limits.d/50-hpc-limits.conf" 
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Install wpa supplicant defaults
+    template: 
+      src: "templates/wpa_supplicant.j2" 
+      dest: "/etc/sysconfig/wpa_supplicant" 
       owner: root
       group: root
       mode: 0644
