@@ -1,5 +1,5 @@
 --- 
 
 - include: oraclelinux.yml
-  when: asnsible_os_family == 'RedHat' and ansible_distribution == 'OracleLinux'
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'OracleLinux'
 

@@ -32,9 +32,82 @@
           - selinux-policy-devel
           - kernel-headers
           - nfs-utils
+          - wpa_supplicant
 
   - name: Install UEK kernel 
     yum: 
       state: latest
       name: 
         - "kernel-uek-devel-{{ ansible_kernel }}"
+
+
+- block: 
+
+#
+# Mellanox did not release OL7.8 supported version. Need to download 7.7
+#
+  - name: Check for mellanox OFED
+    shell: ofed_info -n
+    register: ofed_version
+    ignore_errors: True
+
+  - debug:
+      msg: "MLNX OFED version {{ ofed_version }} | Requested: {{ mellanox_ofed_version }}"
+
+  - name: Download Mellanox OFED
+    get_url: url="{{ mellanox_ofed_base_url }}/MLNX_OFED-{{ mellanox_ofed_version }}/MLNX_OFED_LINUX-{{ mellanox_ofed_version }}-ol{{ os_version }}-x86_64.tgz" dest="/tmp"
+    when: ofed_version is failed or ofed_version.stdout != mellanox_ofed_version
+
+  - name: Extract OFED
+    unarchive: 
+      src: /tmp/MLNX_OFED_LINUX-{{ mellanox_ofed_version }}-ol{{ os_version }}-x86_64.tgz
+      dest: /tmp/
+    when: ofed_version is failed or ofed_version.stdout != mellanox_ofed_version
+
+  - name: Install OFED
+    command: chdir="/tmp/MLNX_OFED_LINUX-{{ mellanox_ofed_version }}-ol{{ os_version }}-x86_64" ./mlnxofedinstall --kernel {{ ansible_kernel }} --kernel-sources /usr/src/kernels/{{ ansible_kernel }} --add-kernel-support --skip-repo --skip-distro-check
+    when: ofed_version is failed or ofed_version.stdout != mellanox_ofed_version
+
+  vars: 
+    os_version: "{{ '7.7' if ansible_distribution_version else ansible_distribution_version }}"
+
+- block: 
+#
+# Copy the required fles
+#
+  - name: Copy /opt/oci-hpc/sbin
+    copy: 
+      src: files/sbin 
+      dest: /opt/oci-hpc/
+      mode: 0755
+      group: root
+      owner: root
+      directory_mode:
+
+  - name: Copy /opt/oci-hpc/bin
+    copy: 
+      src: files/bin 
+      dest: /opt/oci-hpc/
+      mode: 0755
+      group: root
+      owner: root
+      directory_mode:
+
+  - name: Install WPA certs cron script
+    cron: 
+      name: "update wpa certs"
+      user: root
+      job: "/opt/oci-hpc/sbin/update_wpa_certs.py"
+      cron_file: update_wpa_certs
+      minute: "*/15"
+
+  - name: Install ifup-local symlink
+    file:
+      src: /opt/oci-hpc/sbin/ifup-local
+      dest: /usr/sbin/ifup-local
+      owner: root
+      group: root
+      state: link
+      mode: '0755'
+
+
