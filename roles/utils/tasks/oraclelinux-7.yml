@@ -1,0 +1,10 @@
+---
+- block: 
+  - name: Update dracut
+    yum: 
+      state: latest
+      name:
+        - pdsh
+        - pssh
+        - tmux
+        - htop

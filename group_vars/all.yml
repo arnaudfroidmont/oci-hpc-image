@@ -1,7 +1,9 @@
 mellanox_ofed_version: 5.0-2.1.8.0
 mellanox_ofed_base_url: "http://content.mellanox.com/ofed"
 mellanox_ofed_package_name: "MLNX_OFED_LINUX"
+mellanox_hpcx_version: v2.6.0
+mellanox_hpcx_package: "hpcx-v2.6.0-gcc-MLNX_OFED_LINUX-5.0-1.0.0.0-redhat7.7-x86_64"
+openmpi_version: 4.0.3
+openmpi_release: 4.0
 intel_mkl_version: "2019.5-075"
-intel_mpi_versions:
-  - "2018.4-057"
-  - "2019.7-102"
+intel_mpi_versions: ["2018.4-057", "2019.7-102"]

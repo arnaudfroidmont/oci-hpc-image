@@ -1,7 +1,11 @@
 ---
 - block: 
+  - name: "Create MPI directory"
+    file:
+      path: /etc/opt/oci-hpc/bashrc/
+      state: directory
 
-  - name: Create /etc/opt/oci-hpc/bashrc/.bashrc_config
+  - name: "Create /etc/opt/oci-hpc/bashrc/.bashrc_config"
     file: 
       path: /etc/opt/oci-hpc/bashrc/.bashrc_config
       state: touch

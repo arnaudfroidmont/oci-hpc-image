@@ -33,6 +33,7 @@
           - kernel-headers
           - nfs-utils
           - wpa_supplicant
+          - psmisc
 
   - name: Install UEK kernel 
     yum: 

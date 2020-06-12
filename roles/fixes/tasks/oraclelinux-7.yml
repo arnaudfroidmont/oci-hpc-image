@@ -1,0 +1,17 @@
+---
+- block: 
+  - name: Update dracut
+    yum: 
+      state: latest
+      name:
+        - dracut
+        - dracut-network
+
+  - name: Update /etc/default/grub
+    lineinfile:
+      path: /etc/default/grub
+      regexp: '^GRUB_CMDLINE_LINUX='
+      line: 'GRUB_CMDLINE_LINUX="crashkernel=auto LANG=en_US.UTF-8 console=tty0 console=ttyS0,9600 rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0 rd.iscsi.bypass=1 netroot=iscsi:169.254.0.2:::1:iqn.2015-02.oracle.boot:uefi iscsi_param=node.session.timeo.replacement_timeout=6000 net.ifnames=1 nvme_core.shutdown_timeout=10 ipmi_si.tryacpi=0 ipmi_si.trydmi=0 ipmi_si.trydefaults=0 libiscsi.debug_libiscsi_eh=1 loglevel=4 ip=single-dhcp"'
+
+  - name: Update initramfs
+    shell: dracut -f

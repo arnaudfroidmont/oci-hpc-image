@@ -4,3 +4,9 @@
 #
 conflict        mpi
 module load {{ install_prefix }}/hpcx-{{ hpcx_version }}-gcc-MLNX_OFED_LINUX-5.0-1.0.0.0-redhat7.7-x86_64/modulefiles/hpcx
+setenv          OMPI_UCX_TLS    rc,self,sm
+setenv          OMPI_HCOLL_ENABLE_MCAST_ALL     0
+setenv          OMPI_UCX_IB_TRAFFIC_CLASS       105
+setenv          OMPI_UCX_IB_GID_INDEX           3
+setenv          OMPI_MCA_btl    self
+setenv          OMPI_MCA_coll_hcoll_enable      0

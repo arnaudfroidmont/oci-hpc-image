@@ -3,8 +3,11 @@
   become: true
 
   roles: 
+    - fixes
     - legacy
+    - utils
     - ofed
     - hpcx
     - gcc-9
     - intel
+    - openmpi-gcc9   
