@@ -6,6 +6,7 @@
     - fixes
     - legacy
     - utils
+    - tuned
     - ofed
     - hpcx
     - gcc-9
