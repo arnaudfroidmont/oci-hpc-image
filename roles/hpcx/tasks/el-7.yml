@@ -3,10 +3,10 @@
 
   - name: Extract HPC-X
     unarchive: 
-      src: "http://content.mellanox.com/hpc/hpc-x/v2.6/hpcx-{{ hpcx_version }}-gcc-MLNX_OFED_LINUX-5.0-1.0.0.0-redhat7.7-x86_64.tbz"
+      src: "{{ mellanox_hpcx_download_url }}"
       dest: "{{ install_prefix }}"
       remote_src: yes
-      creates: "{{ install_prefix }}/hpcx-{{ hpcx_version }}-gcc-MLNX_OFED_LINUX-5.0-1.0.0.0-redhat7.7-x86_64"
+      creates: "{{ install_prefix }}/{{ mellanox_hpcx_package}}"
 
   - name: Create MPI directory
     file:
