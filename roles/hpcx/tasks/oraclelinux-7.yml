@@ -1,0 +1,29 @@
+---
+- block: 
+
+  - name: Extract HPC-X
+    unarchive: 
+      src: "http://content.mellanox.com/hpc/hpc-x/v2.6/hpcx-{{ hpcx_version }}-gcc-MLNX_OFED_LINUX-5.0-1.0.0.0-redhat7.7-x86_64.tbz"
+      dest: "{{ install_prefix }}"
+      remote_src: yes
+      creates: "{{ install_prefix }}/hpcx-{{ hpcx_version }}-gcc-MLNX_OFED_LINUX-5.0-1.0.0.0-redhat7.7-x86_64"
+
+  - name: Create MPI directory
+    file:
+      path: /usr/share/Modules/modulefiles/mpi/
+      state: directory
+
+  - name: Create HPCX module file
+    template: 
+      dest: "/usr/share/Modules/modulefiles/mpi/hpcx-{{ hpcx_version }}"
+      src: templates/module.j2
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Create HPCX module symlink
+    file: 
+      src: "/usr/share/Modules/modulefiles/mpi/hpcx-{{ hpcx_version }}"
+      dest: /usr/share/Modules/modulefiles/mpi/hpcx
+      state: link
+      force: yes

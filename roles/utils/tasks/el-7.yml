@@ -1,6 +1,6 @@
 ---
 - block: 
-  - name: Update dracut
+  - name: Install tools
     yum: 
       state: latest
       name:

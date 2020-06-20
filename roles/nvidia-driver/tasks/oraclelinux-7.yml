@@ -1,0 +1,45 @@
+---
+- block: 
+  - name: Install development tools
+    yum: 
+      state: latest
+      name:
+        - "@Development Tools" 
+
+  - name: Install UEK kernel 
+    yum: 
+      state: latest
+      name: 
+        - "kernel-uek-devel-{{ ansible_kernel }}"
+        - kernel
+        - kernel-devel
+        - kernel-headers
+
+  - name: Configure CUDA repository
+    yum_repository: 
+      name: nvidia-cuda
+      description: NVIDIA CUDA
+      baseurl: http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64
+      gpgkey: http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/7fa2af80.pub
+      gpgcheck: yes
+      enabled: yes
+
+  - name: Install CUDA
+    yum: 
+      state: latest
+      name: 
+        - cuda
+      disablerepo: ol7_developer
+
+  - name: load nvidia_uvm on startup
+    blockinfile: 
+      path: /etc/sysconfig/modules/nvda_uvm.modules
+      block: | 
+        #!/bin/sh
+        modprobe nvidia_uvm
+
+  - name: update permissions
+    file: 
+      path: /etc/sysconfig/modules/nvda_uvm.modules
+      mode: '0755'
+

@@ -31,20 +31,12 @@
           - binutils-devel
           - selinux-policy-devel
           - kernel-headers
+          - kernel-devel-{{ ansible_kernel }}
           - nfs-utils
           - wpa_supplicant
           - psmisc
 
-  - name: Install UEK kernel 
-    yum: 
-      state: latest
-      name: 
-        - "kernel-uek-devel-{{ ansible_kernel }}"
 - block: 
-
-#
-# Mellanox did not release OL7.8 supported version. Need to download 7.7
-#
 
   - name: Check for mellanox OFED
     shell: ofed_info -n
@@ -55,22 +47,23 @@
       msg: "MLNX OFED version {{ ofed_version }} | Requested: {{ mellanox_ofed_version }}"
 
   - name: Download Mellanox OFED
-    get_url: url="{{ mellanox_ofed_base_url }}/MLNX_OFED-{{ mellanox_ofed_version }}/MLNX_OFED_LINUX-{{ mellanox_ofed_version }}-ol{{ os_version }}-x86_64.tgz" dest="/tmp"
+    get_url: url="{{ mellanox_ofed_base_url }}/MLNX_OFED-{{ mellanox_ofed_version }}/MLNX_OFED_LINUX-{{ mellanox_ofed_version }}-rhel{{ os_version }}-x86_64.tgz" dest="/tmp"
     when: ofed_version is failed or ofed_version.stdout != mellanox_ofed_version
 
   - name: Extract OFED
     unarchive: 
-      src: /tmp/MLNX_OFED_LINUX-{{ mellanox_ofed_version }}-ol{{ os_version }}-x86_64.tgz
+      src: /tmp/MLNX_OFED_LINUX-{{ mellanox_ofed_version }}-rhel{{ os_version }}-x86_64.tgz
       dest: /tmp/
       remote_src: yes
     when: ofed_version is failed or ofed_version.stdout != mellanox_ofed_version
 
   - name: Install OFED
-    command: chdir="/tmp/MLNX_OFED_LINUX-{{ mellanox_ofed_version }}-ol{{ os_version }}-x86_64" ./mlnxofedinstall --kernel {{ ansible_kernel }} --kernel-sources /usr/src/kernels/{{ ansible_kernel }} --add-kernel-support --skip-repo --skip-distro-check
+    command: chdir="/tmp/MLNX_OFED_LINUX-{{ mellanox_ofed_version }}-rhel{{ os_version }}-x86_64" ./mlnxofedinstall --kernel {{ ansible_kernel }} --kernel-sources /usr/src/kernels/{{ ansible_kernel }} --add-kernel-support --skip-repo --skip-distro-check
     when: ofed_version is failed or ofed_version.stdout != mellanox_ofed_version
 
   vars: 
-    os_version: "{{ '7.7' if ansible_distribution_version == '7.8' else ansible_distribution_version }}"
+    os_version: "{{ ansible_distribution_version }}"
+
 
 - block: 
 #
